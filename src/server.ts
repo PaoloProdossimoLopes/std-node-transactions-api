@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 import fastify from 'fastify'
 import { databaseBuilder } from './database'
+import { env } from './env/index'
 
 const app = fastify()
 
@@ -15,7 +16,8 @@ app.get('/hello', async () => {
   return transactions
 })
 
-const port = 3333
 app
-  .listen({ port })
-  .then(() => console.log(`HTTP server running on http://localhost:${port}`))
+  .listen({ port: env.PORT })
+  .then(() =>
+    console.log(`HTTP server running on http://localhost:${env.PORT}`),
+  )
