@@ -1,6 +1,7 @@
+import { execSync } from 'child_process'
 import { describe } from 'node:test'
 import request from 'supertest'
-import { afterAll, beforeAll, expect, it, test } from 'vitest'
+import { afterAll, beforeAll, beforeEach, expect, it, test } from 'vitest'
 import { app } from '../src/app'
 
 describe('Transactions routes', () => {
@@ -11,6 +12,22 @@ describe('Transactions routes', () => {
      * registro de todas as rotas e "plugins"
      */
     await app.ready()
+  })
+
+  beforeEach(() => {
+    /**
+     * o metodo `execSync` da lib `child_process`
+     * serve para executar comandos de terminal
+     *
+     * nesse caso usaremos para limapr obanco de
+     * dados de teste com o comando:
+     * `npm run knex migrate:rollback --all`
+     *
+     * e dps criar as tableas novamete com o comando:
+     * `npm run knex migrate:latest`
+     */
+    execSync('npm run knex migrate:rollback --all')
+    execSync('npm run knex migrate:latest')
   })
 
   afterAll(async () => {
